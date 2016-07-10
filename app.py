@@ -13,7 +13,7 @@ def on_connect(mosq, obj, rc):
 def on_message(mosq, obj, msg):
     global message
     message_data = json.loads(msg.payload)
-    if message_data['meaning'] == 'take_picture':
+    if message_data['meaning'] == 'request_picture':
         get_image_and_post()
 
 def on_log(mosq, obj, level, string):
