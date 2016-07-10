@@ -26,7 +26,7 @@ def on_subscribe(client, userdata, mid, granted_qos):
 def get_image_and_post():
     client = ImgurClient(client_id, client_secret)
     print "Taking image..."
-    os.system('raspistill -vf -hf -o /home/pi/camera/pic.jpg')
+    os.system('raspistill -o pic.jpg')
     print "Uploading image to Imgur."
     capture = client.upload_from_path('/home/pi/camera/pic.jpg', config=None, anon=True)
     publish_URL(capture['link'])
