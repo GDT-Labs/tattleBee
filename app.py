@@ -13,7 +13,9 @@ def on_connect(mosq, obj, rc):
 def on_message(mosq, obj, msg):
     global message
     message_data = json.loads(msg.payload)
+    print message_data['meaning']
     if message_data['meaning'] == 'request_picture':
+        print "Image requested..."
         get_image_and_post()
 
 def on_log(mosq, obj, level, string):
@@ -24,7 +26,9 @@ def on_subscribe(client, userdata, mid, granted_qos):
 
 def get_image_and_post():
     client = ImgurClient(client_id, client_secret)
+    print "Taking image..."
     os.system('raspistill -vf -hf -o /home/pi/camera/pic.jpg')
+    print "Uploading image to Imgur."
     capture = client.upload_from_path('/home/pi/camera/pic.jpg', config=None, anon=True)
     publish_URL(capture['link'])
     print "Uploaded image to " + capture['link']
