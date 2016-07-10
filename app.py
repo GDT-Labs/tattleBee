@@ -7,6 +7,12 @@ import time
 client_id = '75f55a5c2221a79'
 client_secret = '7b039d13d0556893c3e5bc6461463ca5f22f3ee3'
 
+mqttc = mqtt.Client()
+mqttc.username_pw_set('9fd83945-7910-409f-ac4d-ff79128f3fec', 'sIrfSbTIfjHm')
+# Assign event callbacks
+mqttc.on_message = on_message
+mqttc.on_connect = on_connect
+
 def on_connect(mosq, obj, rc):
     print("rc: " + str(rc))
 
@@ -41,14 +47,7 @@ def publish_URL(url):
     'meaning': 'image',
     'value': url
     }
-    client.publish(credentials['topic'] +'data', json.dumps(message2))
-
-
-mqttc = mqtt.Client()
-mqttc.username_pw_set('9fd83945-7910-409f-ac4d-ff79128f3fec', 'sIrfSbTIfjHm')
-# Assign event callbacks
-mqttc.on_message = on_message
-mqttc.on_connect = on_connect
+    mqttc.publish(credentials['topic'] +'data', json.dumps(message2))
 
 # Connect
 mqttc.connect("mqtt.relayr.io", 1883)
