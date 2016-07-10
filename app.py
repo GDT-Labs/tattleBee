@@ -1,9 +1,8 @@
 import paho.mqtt.client as mqtt
 import json
 
-TEMP_THRESHOLD = 27.5
-vibration_alarm_state = 0
-temp_alarm_state = 0
+client_id = '75f55a5c2221a79'
+client_secret = '7b039d13d0556893c3e5bc6461463ca5f22f3ee3'
 
 def on_connect(mosq, obj, rc):
     print("rc: " + str(rc))
@@ -21,7 +20,10 @@ def on_subscribe(client, userdata, mid, granted_qos):
     print "Subscribe: " + mid
 
 def get_image_and_post():
-    return NotImplemented
+    client = ImgurClient(client_id, client_secret)
+    os.system('raspistill -vf -hf -o /home/pi/camera/pic.jpg')
+    capture = client.upload_from_path('/home/pi/camera/pic.jpg', config=None, anon=True)
+    print "Uploaded image to " + capture['link']
 
 def publish_URL(url):
     return NotImplemented
@@ -39,3 +41,5 @@ mqttc.subscribe("/v1/9fd83945-7910-409f-ac4d-ff79128f3fec/data", qos=0)
 
 while (True):
     mqttc.loop()
+    get_image_and_post():
+    time.sleep(10)
