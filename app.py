@@ -10,6 +10,16 @@ client_secret = '7b039d13d0556893c3e5bc6461463ca5f22f3ee3'
 mqttc = mqtt.Client()
 mqttc.username_pw_set('9fd83945-7910-409f-ac4d-ff79128f3fec', 'sIrfSbTIfjHm')
 
+# mqtt credentials
+creds = {
+    'clientId': 'Tn9g5RXkQQJ+sTf95Eo8/7A',
+    'user':     '9fd83945-7910-409f-ac4d-ff79128f3fec',
+    'password': 'sIrfSbTIfjHm',
+    'topic':    '/v1/9fd83945-7910-409f-ac4d-ff79128f3fec/',
+    'server':   'mqtt.relayr.io',
+    'port':     1883
+}
+
 def on_connect(mosq, obj, rc):
     print("rc: " + str(rc))
 
@@ -35,11 +45,11 @@ def get_image_and_post():
     os.system('raspistill -o pic.jpg')
     print "Uploading image to Imgur."
     capture = client.upload_from_path('pic.jpg', config=None, anon=True)
-    publish_URL(capture['link'])
+    publish_URL(creds, capture['link'])
     print "Uploaded image to " + capture['link']
     delete_image()
 
-def publish_URL(url):
+def publish_URL(credentials, url):
     message2 = {
     'meaning': 'image',
     'value': url
