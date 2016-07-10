@@ -23,14 +23,18 @@ def on_log(mosq, obj, level, string):
 def on_subscribe(client, userdata, mid, granted_qos):
     print "Subscribe: " + mid
 
+def delete_image():
+    os.system('rm -rf pic.jpg')
+
 def get_image_and_post():
     client = ImgurClient(client_id, client_secret)
     print "Taking image..."
     os.system('raspistill -o pic.jpg')
     print "Uploading image to Imgur."
-    capture = client.upload_from_path('/home/pi/camera/pic.jpg', config=None, anon=True)
+    capture = client.upload_from_path('pic.jpg', config=None, anon=True)
     publish_URL(capture['link'])
     print "Uploaded image to " + capture['link']
+    delete_image()
 
 def publish_URL(url):
     message2 = {
